@@ -3,65 +3,46 @@ import DayList from "components/DayList";
 import axios from "axios";
 import "components/Application.scss";
 import Appointment from "components/Appointment";
-
-const appointments = [
-  {
-    id: 1,
-    time: "12pm",
-  },
-  {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 1,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  {
-    id: 3,
-    time: "2pm",
-  },
-  {
-    id: 4,
-    time: "4pm",
-    interview: {
-      student: "Sam Jackson",
-      interviewer: {
-        id: 5,
-        name: "Sven Jones",
-        avatar: "https://i.imgur.com/twYrpay.jpg",
-      }
-    }
-  }
-];
+import { getAppointmentsForDay, getInterview } from "../helpers/selectors.js";
 
 
 
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
-  const [days, setDays] = useState([]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {},
+    interviewers: {}
+  });
 
-useEffect(() => {
-  const apiDays = '/api/days';
-  axios.get(apiDays)
-    .then(() => {
-      setDays(days)
+  const setDay = day => setState({ ...state, day });
+  console.log(state.interviewers);
+  useEffect(() => {
+    const apiDays = axios.get("/api/days");
+    const apiAppt = axios.get("/api/appointments");
+    const apiInt = axios.get("/api/interviewers");
+    
+    Promise.all([apiDays, apiAppt, apiInt])
+    .then((all)=> {
+      
+      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
     })
-}, [])
+  }, []);
 
+  const appointments = getAppointmentsForDay(state, state.day);
 
-  const ScheduleList = appointments.map((appointment) => (
-    <Appointment
+  const ScheduleList = appointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+   
+    return (
+     <Appointment
       key={appointment.id}
       id={appointment.id}
       time={appointment.time}
-      interview={appointment.interview}
+      interview={interview}
       />
-  ));
+    );
+  });
 
   return (
     <main className="layout">
@@ -74,8 +55,8 @@ useEffect(() => {
 <hr className="sidebar__separator sidebar--centered" />
 <nav className="sidebar__menu">
   <DayList
-    days={days}
-    day={day}
+    days={state.days}
+    day={state.day}
     setDay={setDay}
   />
 </nav>
@@ -92,3 +73,4 @@ useEffect(() => {
   </main>
   );
 }
+
