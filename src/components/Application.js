@@ -16,7 +16,6 @@ export default function Application(props) {
   });
 
   const setDay = day => setState({ ...state, day });
-  console.log(state.interviewers);
   useEffect(() => {
     const apiDays = axios.get("/api/days");
     const apiAppt = axios.get("/api/appointments");
