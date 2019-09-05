@@ -20,7 +20,7 @@ const getInterview = function(state, interview) {
   return interviewObj;
 }
 
-const getInterviewersByDay = function(state, day) {
+const getInterviewersForDay = function(state, day) {
   const findDay = state.days.find(weekday => weekday.name === day);
   
   if (state.days.length === 0 || findDay === undefined) {  
@@ -30,4 +30,4 @@ const getInterviewersByDay = function(state, day) {
     return returnedArray;
 }
 
-module.exports = { getAppointmentsForDay, getInterview, getInterviewersByDay }
+module.exports = { getAppointmentsForDay, getInterview, getInterviewersForDay }
