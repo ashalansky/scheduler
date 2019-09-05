@@ -27,7 +27,7 @@ const getInterviewersForDay = function(state, day) {
     return [];
   }
   const returnedArray = findDay.interviewers.map(id => state.interviewers[id])
-    return returnedArray;
+  return returnedArray;
 }
 
 module.exports = { getAppointmentsForDay, getInterview, getInterviewersForDay }
