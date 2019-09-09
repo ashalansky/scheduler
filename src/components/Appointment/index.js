@@ -55,7 +55,9 @@ export default function Appointment(props) {
   };
 
   return (
-    <article className="appointment">
+    <article 
+    className="appointment"
+    data-testid="appointment">
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && (
@@ -91,7 +93,7 @@ export default function Appointment(props) {
       )}
       {mode === EDIT && (
         <Form
-          student={props.interview.student}
+          name={props.interview.student}
           interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
           onSave={save}
