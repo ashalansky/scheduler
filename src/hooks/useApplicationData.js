@@ -95,6 +95,7 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     }
+    
     return axios.delete(`/api/appointments/${id}`, { interview })
     .then(response => {
       dispatch({ type: SET_INTERVIEW,
