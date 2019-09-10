@@ -24,9 +24,12 @@ const reducer = function(state, action) {
       for (let appointment of day.appointments) {
         if (action.id === appointment) {
           if (action.interview && !state.appointments[action.id].interview) {
-            day.spots--;
-          } else if (!action.interview && state.appointments[action.id].interview){
-            day.spots++;
+            return { ...day, spots: day.spots - 1 };
+          } else if (
+            !action.interview && 
+            state.appointments[action.id].interview)
+          {
+            return { ...day, spots: day.spots + 1};
           }
         }
       }
