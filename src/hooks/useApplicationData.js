@@ -32,14 +32,7 @@ export default function useApplicationData() {
   }, []);
 
   const bookInterview = function(id, interview) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    }
+
     return axios.put(`/api/appointments/${id}`, { interview })
       .then(response => {
         dispatch({ type: SET_INTERVIEW,
@@ -50,15 +43,7 @@ export default function useApplicationData() {
   }
 
   const cancelInterview = function(id, interview) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: {...interview }
-    }
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    }
-    
+  
     return axios.delete(`/api/appointments/${id}`, { interview })
     .then(response => {
       dispatch({ type: SET_INTERVIEW,
